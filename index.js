@@ -1,74 +1,55 @@
 const easterDay = require('@jsbits/easter-day')
-
-const addDays = (date, days) => {
-	var result = new Date(date)
-	result.setDate(result.getDate() + days)
-
-	return result
-}
-
-const setMonth = (date, month, day) => {
-	var result = new Date(date)
-	result.setMonth(month, day)
-
-	return result
-}
-
-const formatDate = (date) => {
-	return date.getFullYear(date)+'-'+('0'+(date.getMonth()+1)).slice(-2)+'-'+('0'+date.getDate()).slice(-2)
-}
+const moment = require('moment')
 
 /**
  * Get all Danish holiday in the given year.
  */
 const getHolidays = (year) => {
-	const easter = easterDay(year)
+  const easter = moment(easterDay(year))
 
-	const holidays = {}
+  const holidays = {}
 
-	const obj = {
-		'nytårsdag': setMonth(easter, 0, 1),
-		'palmesøndag': addDays(easter, -7),
-		'skærtorsdag': addDays(easter, -3),
-		'langfredag': addDays(easter, -2),
-		'påskedag': easter,
-		'2. påskedag': addDays(easter, 1),
-		'store bededag': addDays(easter, 26),
-		'kristi himmelfartsdag': addDays(easter, 39),
-		'pinsedag': addDays(easter, 49),
-		'2. pinsedag': addDays(easter, 50),
-		'juledag': setMonth(easter, 11, 25),
-		'2. juledag': setMonth(easter, 11, 26),
-	}
+  const obj = {
+    'nytårsdag': moment(easter).month(0).date(1),
+    'palmesøndag': moment(easter).add(-7, 'days'),
+    'skærtorsdag': moment(easter).add(-3, 'days'),
+    'langfredag': moment(easter).add(-2, 'days'),
+    'påskedag': easter,
+    '2. påskedag': moment(easter).add(1, 'day'),
+    'store bededag': moment(easter).add(26, 'days'),
+    'kristi himmelfartsdag': moment(easter).add(39, 'days'),
+    'pinsedag': moment(easter).add(49, 'days'),
+    '2. pinsedag': moment(easter).add(50, 'days'),
+    'juledag': moment(easter).month(11).date(25),
+    '2. juledag': moment(easter).month(11).date(26)
+  }
 
-	for (const [key, value] of Object.entries(obj)) {
-		holidays[formatDate(value)] = key
-	}
+  for (const [key, value] of Object.entries(obj)) {
+    holidays[value.format('YYYY-MM-DD')] = key
+  }
 
-	return holidays
+  return holidays
+}
+
+/**
+ * Get name of holiday if any.
+ */
+const getHolidayName = (date) => {
+  date = moment(date)
+  const year = date.get('year')
+  const holidays = getHolidays(year)
+  const key = date.format('YYYY-MM-DD')
+
+  return key in holidays ? holidays[key] : null
 }
 
 /**
  * Decide if the given day is a holiday.
  */
 const isHoliday = (date) => {
-	const year = date.getUTCFullYear()
-	const holidays = getHolidays(year)
-
-	return formatDate(date) in holidays
-}
-
-/**
- * Decide if the given day is a holiday.
- */
-const getHolidayName = (date) => {
-	const year = date.getUTCFullYear()
-	const holidays = getHolidays(year)
-	const key = formatDate(date)
-
-	return key in holidays ? holidays[key] : null
+  return getHolidayName(date) !== null
 }
 
 exports.getHolidays = getHolidays
-exports.isHoliday = isHoliday
 exports.getHolidayName = getHolidayName
+exports.isHoliday = isHoliday
