@@ -1,0 +1,13 @@
+{
+  "name": "danish-holidajs",
+  "version": "1.0.0",
+  "description": "Danish holidays",
+  "main": "index.js",
+  "repository": "https://github.com/mikkelricky/danish-holidajs",
+  "author": "Mikkel Ricky",
+  "license": "MIT",
+  "dependencies": {
+    "@jsbits/easter-day": "^1.0.1",
+    "moment": "^2.24.0"
+  }
+}
