@@ -3,11 +3,21 @@
   "version": "1.0.0",
   "description": "Danish holidays",
   "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
   "repository": "https://github.com/mikkelricky/danish-holidajs",
   "author": "Mikkel Ricky",
   "license": "MIT",
   "dependencies": {
     "@jsbits/easter-day": "^1.0.1",
     "moment": "^2.24.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.1.2"
   }
 }
