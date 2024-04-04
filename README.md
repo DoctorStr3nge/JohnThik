@@ -1,7 +1,7 @@
-# danish-holidajs
+# JohnThik
 
 Installation
 
 ```sh
-yarn add danish-holidajs
+yarn add JhonThik
 ```
